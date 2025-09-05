@@ -89,3 +89,13 @@ export async function deletarCarros(id) {
   
     let [info] = await connection.query(comando, [id]);
   }
+
+  export async function alterarImagemCarros(id, caminho) {
+    const comando = `
+      UPDATE carros3
+         SET img_carros = ?
+       WHERE id_carro = ?
+    `
+  
+    const [info] = await connection.query(comando, [caminho, id])
+  }

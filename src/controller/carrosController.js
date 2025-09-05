@@ -1,5 +1,7 @@
 import * as repo from '../repository/carrosRepository.js';
+import multer from'multer';
 
+const upload = multer({ dest: 'public/storage' })
 import { Router } from "express";
 const endpoints = Router();
 
@@ -24,15 +26,21 @@ endpoints.get('/carros/:id', async (req, resp) => {
 })
 
 endpoints.post('/carros', async (req, resp) => {
-  let novoCurso = req.body;
-
-  let id = await repo.inserirCarros(novoCarro);
+  let novoCarros = req.body;
+  let id = await repo.inserirCarros(novoCarros);
   resp.send({ novoId: id });
 })
 
+endpoints.put('/carros/:id/imagem', upload.single('img'), async (req, resp) => {
+  let caminho = req.file.path;
+  let id = req.params.id;
+   
+  await repo.alterarImagemCarros(id, caminho);
+  resp.send();
+})
 
 endpoints.put('/carros/:id', async (req, resp) => {
-  let id = Number(req.params.id);
+  let id = req.params.id;
   let novosDados = req.body;
 
   await repo.alterarCarros(id, novosDados);

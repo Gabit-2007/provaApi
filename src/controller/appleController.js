@@ -1,5 +1,7 @@
 import * as repo from '../repository/appleRepository.js';
+import multer from'multer';
 
+const upload = multer({ dest: 'public/storage' })
 import { Router } from "express";
 const endpoints = Router();
 
@@ -39,6 +41,13 @@ endpoints.put('/apple/:id', async (req, resp) => {
   resp.send();
 })
 
+endpoints.put('/apple/:id/imagem', upload.single('img'), async (req, resp) => {
+  let caminho = req.file.path;
+  let id = req.params.id;
+   
+  await repo.alterarImagemApple(id, caminho);
+  resp.send();
+})
 
 endpoints.delete('/apple/:id', async (req, resp) => {
   let id = Number(req.params.id);

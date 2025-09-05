@@ -85,3 +85,13 @@ export async function deletarProd(id) {
   
     let [info] = await connection.query(comando, [id]);
   }
+
+  export async function alterarImagemApple(id, caminho) {
+    const comando = `
+      UPDATE produtos_apple1
+         SET img_apple = ?
+       WHERE id_produto = ?
+    `
+  
+    const [info] = await connection.query(comando, [caminho, id])
+  }
